@@ -8,11 +8,44 @@ module.exports = (sequelize, DataTypes) => {
             return bcrypt.compareSync(password, this.hashedPassword.toString());
         }
         toSafeObject() {
-            const { id, username, email } = this; // context will be the User instance
-            return { id, username, email };
+            const { id, firstName, lastName, username, email } = this; // context will be the User instance
+            return { id, firstName, lastName, username, email };
         }
         static associate(models) {
             // define association here
+
+            // Spots owned by user
+            User.hasMany(models.Spot, {
+                foreignKey: 'ownerId',
+                onDelete: 'CASCADE',
+                hooks: true,
+            });
+
+            // Reviews made by user
+            User.belongsToMany(models.Spot, {
+                foreignKey: 'userId',
+                through: models.Review,
+                as: 'Spot_Review',
+            });
+
+            // test stuff
+            User.hasMany(models.Review, {
+                foreignKey: 'userId',
+                onDelete: 'CASCADE',
+                hooks: true,
+            });
+
+            // Bookings made by user
+            User.belongsToMany(models.Spot, {
+                through: models.Booking,
+                foreignKey: 'userId',
+                as: 'Spot_Booking',
+            });
+            User.hasMany(models.Booking, {
+                foreignKey: 'userId',
+                onDelete: 'CASCADE',
+                hooks: true,
+            });
         }
         static getCurrentUserById(id) {
             return User.scope('currentUser').findByPk(id);
@@ -52,18 +85,6 @@ module.exports = (sequelize, DataTypes) => {
 
     User.init(
         {
-            username: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    len: [4, 30],
-                    isNotEmail(value) {
-                        if (Validator.isEmail(value)) {
-                            throw new Error('Cannot be an email.');
-                        }
-                    },
-                },
-            },
             firstName: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -84,6 +105,18 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     len: [3, 256],
                     isEmail: true,
+                },
+            },
+            username: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    len: [4, 30],
+                    isNotEmail(value) {
+                        if (Validator.isEmail(value)) {
+                            throw new Error('Cannot be an email.');
+                        }
+                    },
                 },
             },
             hashedPassword: {
@@ -109,7 +142,9 @@ module.exports = (sequelize, DataTypes) => {
             },
             scopes: {
                 currentUser: {
-                    attributes: { exclude: ['hashedPassword'] },
+                    attributes: {
+                        exclude: ['hashedPassword', 'createdAt', 'updatedAt'],
+                    },
                 },
                 loginUser: {
                     attributes: {},

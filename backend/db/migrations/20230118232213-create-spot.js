@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable(
-            'Users',
+            'Spots',
             {
                 id: {
                     allowNull: false,
@@ -16,26 +16,44 @@ module.exports = {
                     primaryKey: true,
                     type: Sequelize.INTEGER,
                 },
-                firstName: {
-                    type: Sequelize.STRING(30),
+                ownerId: {
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                 },
-                lastName: {
-                    type: Sequelize.STRING(30),
+                address: {
+                    type: Sequelize.STRING,
                     allowNull: false,
                 },
-                email: {
-                    type: Sequelize.STRING(256),
+                city: {
+                    type: Sequelize.STRING,
                     allowNull: false,
-                    unique: true,
                 },
-                username: {
-                    type: Sequelize.STRING(30),
+                state: {
+                    type: Sequelize.STRING,
                     allowNull: false,
-                    unique: true,
                 },
-                hashedPassword: {
-                    type: Sequelize.STRING.BINARY,
+                country: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                lat: {
+                    type: Sequelize.DECIMAL,
+                    allowNull: false,
+                },
+                lng: {
+                    type: Sequelize.DECIMAL,
+                    allowNull: false,
+                },
+                name: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                description: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                price: {
+                    type: Sequelize.DECIMAL,
                     allowNull: false,
                 },
                 createdAt: {
@@ -53,7 +71,6 @@ module.exports = {
         );
     },
     async down(queryInterface, Sequelize) {
-        options.tableName = 'Users';
-        return queryInterface.dropTable(options);
+        await queryInterface.dropTable('Spots');
     },
 };
