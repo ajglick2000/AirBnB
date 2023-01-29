@@ -52,6 +52,7 @@ router.get('/', async (req, res) => {
                 as: 'User_Review',
                 attributes: [],
                 required: false,
+                includeIgnoreAttributes: false,
             },
             {
                 model: Spot_Image,
@@ -60,8 +61,10 @@ router.get('/', async (req, res) => {
                     preview: true,
                 },
                 required: false,
+                includeIgnoreAttributes: false,
             },
         ],
+        includeIgnoreAttributes: false,
         group: ['Spot.id'],
     });
     return res.json({
