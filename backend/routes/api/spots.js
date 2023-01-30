@@ -10,16 +10,31 @@ const spotIdRouter = require('./spots/spotId.js');
 const router = express.Router();
 
 const validateSpot = [
-    // add more vaidations
-    check('address').exists({ checkFalsy: true }).withMessage('.'),
-    check('city').exists({ checkFalsy: true }).withMessage('.'),
-    check('state').exists({ checkFalsy: true }).withMessage('.'),
-    check('country').exists({ checkFalsy: true }).withMessage('.'),
-    check('lat').exists({ checkFalsy: true }).withMessage('.'),
-    check('lng').exists({ checkFalsy: true }).withMessage('.'),
-    check('name').exists({ checkFalsy: true }).withMessage('.'),
-    check('description').exists({ checkFalsy: true }).withMessage('.'),
-    check('price').exists({ checkFalsy: true }).withMessage('.'),
+    check('address')
+        .exists({ checkFalsy: true })
+        .withMessage('Street address is required'),
+    check('city').exists({ checkFalsy: true }).withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    check('country')
+        .exists({ checkFalsy: true })
+        .withMessage('Country is required'),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .withMessage('Longitude is not valid'),
+    check('name')
+        .exists({ checkFalsy: true })
+        .withMessage('Name must be less than 50 characters'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage('Description is required'),
+    check('price')
+        .exists({ checkFalsy: true })
+        .withMessage('Price per day is required'),
     handleValidationErrors,
 ];
 
@@ -102,6 +117,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 as: 'User_Review',
                 attributes: [],
                 required: false,
+                includeIgnoreAttributes: false,
             },
             {
                 model: Spot_Image,
@@ -110,9 +126,11 @@ router.get('/current', requireAuth, async (req, res) => {
                     preview: true,
                 },
                 required: false,
+                includeIgnoreAttributes: false,
             },
         ],
-        group: ['Spot.id'],
+        includeIgnoreAttributes: false,
+        group: ['Spot.id', 'Spot_Images.url'],
     });
     return res.json({
         Spots: userSpots,
