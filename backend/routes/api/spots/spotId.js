@@ -99,19 +99,25 @@ router.get('/', async (req, res) => {
                 as: 'User_Review',
                 attributes: [],
                 required: false,
+                includeIgnoreAttributes: false,
             },
             {
                 model: Spot_Image,
                 attributes: ['id', 'url', 'preview'],
                 separate: true,
                 required: false,
+                includeIgnoreAttributes: false,
             },
             {
                 model: User,
                 attributes: ['id', 'firstName', 'lastName'],
                 as: 'Owner',
+                includeIgnoreAttributes: false,
             },
         ],
+
+        includeIgnoreAttributes: false,
+        group: ['Spot.id', 'Spot_Images.url'],
     });
     if (spot.id) {
         return res.json(spot);
