@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
         ],
 
         includeIgnoreAttributes: false,
-        group: ['Spot.id', 'Spot_Images.url'],
+        group: ['Spot.id'],
     });
     if (spot.id) {
         return res.json(spot);
