@@ -127,6 +127,7 @@ module.exports = {
             }
         }
 
+        options.tableName = 'Spots';
         return queryInterface.bulkDelete(options, {}, {});
     },
 };
