@@ -1,5 +1,10 @@
 'use strict';
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+    options.schema = process.env.SCHEMA; // define your schema in options object
+}
+
 const { Review, User, Spot } = require('../models');
 
 const reviewImages = [
@@ -69,5 +74,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
+        return queryInterface.bulkDelete(options, {}, {});
     },
 };
