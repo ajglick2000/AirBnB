@@ -1,27 +1,38 @@
-import React from 'react';
+import React from "react";
 
-import './index.css';
+import "./index.css";
 
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { ModalProvider, Modal } from './context/Modal';
-import App from './App';
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { ModalProvider, Modal } from "./context/Modal";
+import App from "./App";
 
+<<<<<<< HEAD
 import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session';
 import * as spotActions from './store/spots';
+=======
+import configureStore from "./store";
+import { restoreCSRF, csrfFetch } from "./store/csrf";
+import * as sessionActions from "./store/session";
+import * as spotsActions from "./store/spots";
+>>>>>>> 3e886e516de996ba78782878ff103c0d791b21e0
 
 const store = configureStore();
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
     restoreCSRF();
 
     window.csrfFetch = csrfFetch;
     window.store = store;
     window.sessionActions = sessionActions;
+<<<<<<< HEAD
     window.spotActions = spotActions;
+=======
+    window.spotsActions = spotsActions;
+>>>>>>> 3e886e516de996ba78782878ff103c0d791b21e0
 }
 
 // Wrap the application with the Modal provider and render the Modal component
@@ -44,5 +55,5 @@ ReactDOM.render(
     <React.StrictMode>
         <Root />
     </React.StrictMode>,
-    document.getElementById('root')
+    document.getElementById("root")
 );
