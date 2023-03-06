@@ -10,7 +10,6 @@ const setUser = (user) => {
     };
 };
 
-// eslint-disable-next-line
 const removeUser = () => {
     return {
         type: REMOVE_USER,
@@ -65,7 +64,7 @@ export const logout = () => async (dispatch) => {
 
 const initialState = { user: null };
 
-const sessionReducer = (state = initialState, action) => {
+export default function sessionReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         case SET_USER:
@@ -79,6 +78,4 @@ const sessionReducer = (state = initialState, action) => {
         default:
             return state;
     }
-};
-
-export default sessionReducer;
+}
