@@ -117,10 +117,14 @@ router.get('/', async (req, res) => {
             },
         ],
 
-        includeIgnoreAttributes: true,
+        includeIgnoreAttributes: false,
         group: ['Spot.id'],
+        // raw: true,
     });
+
     if (spot) {
+        const owner = await User.findByPk(spot.ownerId);
+        spot.set('Owner', owner);
         return res.json(spot);
     } else {
         res.status(404);
