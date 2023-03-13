@@ -33,20 +33,26 @@ function Navigation({ isLoaded }) {
     }
 
     return (
-        <ul>
-            <li>
+        <ul className="navbar">
+            <li className="logo-container">
                 <NavLink exact to="/">
-                    Home
+                    <img
+                        className="logo"
+                        src="https://seeklogo.com/images/A/airbnb-logo-7F4086530F-seeklogo.com.png"
+                        alt="logo"
+                    ></img>
                 </NavLink>
             </li>
-            {sessionUser && (
-                <li>
-                    <NavLink exact to="/spots/new">
-                        Create a New Spot
-                    </NavLink>
-                </li>
-            )}
-            {isLoaded && sessionLinks}
+            <li>
+                {sessionUser && (
+                    <li>
+                        <NavLink exact to="/spots/new">
+                            Create a New Spot
+                        </NavLink>
+                    </li>
+                )}
+                {isLoaded && sessionLinks}
+            </li>
         </ul>
     );
 }

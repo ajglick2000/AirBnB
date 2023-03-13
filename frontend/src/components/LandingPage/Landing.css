@@ -6,8 +6,6 @@ img {
 #spots {
     display: flex;
     flex-wrap: wrap;
+    max-width: 1000px;
+    margin: auto;
 }
-
-/* .spot {
-    flex: 1 1 0px;
-} */

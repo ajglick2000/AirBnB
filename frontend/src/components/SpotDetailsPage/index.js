@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as spotsActions from '../../store/spots';
 import Reviews from '../Reviews';
+import './SpotDetails.css';
 
 export default function SpotDetailsPage() {
     const dispatch = useDispatch();
@@ -33,8 +34,8 @@ export default function SpotDetailsPage() {
     };
 
     return (
-        <div>
-            <h2>{spot.name}</h2>
+        <div className="spot-details">
+            <h1>{spot.name}</h1>
             <h3>
                 {spot.city}, {spot.state}, {spot.country}
             </h3>

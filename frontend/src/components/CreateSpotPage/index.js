@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
+import './CreateSpot.css';
 
 export default function CreateSpotPage() {
     const dispatch = useDispatch();
@@ -84,7 +85,7 @@ export default function CreateSpotPage() {
     };
 
     return (
-        <>
+        <div className="form">
             <h1>Create a new Spot</h1>
             <form onSubmit={handleSubmit}>
                 <div id="spot-location">
@@ -266,6 +267,6 @@ export default function CreateSpotPage() {
                 </div>
                 <button type="submit">Create Spot</button>
             </form>
-        </>
+        </div>
     );
 }
