@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
+import './UpdateSpot.css';
 
 export default function UpdateSpotPage(props) {
     const location = useLocation();
@@ -80,8 +81,8 @@ export default function UpdateSpotPage(props) {
     };
 
     return (
-        <>
-            <h1>Create a new Spot</h1>
+        <div className="form">
+            <h1>Update your Spot</h1>
             <form onSubmit={handleSubmit}>
                 <div id="spot-location">
                     <h2>Where's your place located?</h2>
@@ -214,6 +215,6 @@ export default function UpdateSpotPage(props) {
                 </div>
                 <button type="submit">Create Spot</button>
             </form>
-        </>
+        </div>
     );
 }

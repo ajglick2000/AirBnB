@@ -17,7 +17,7 @@ export default function ManageSpotsPage() {
     }
 
     return (
-        <>
+        <div>
             <h1>Manage Spots</h1>
             <NavLink exact to="/spots/new">
                 <button type="button">Create a New Spot</button>
@@ -68,6 +68,6 @@ export default function ManageSpotsPage() {
                     );
                 })}
             </div>
-        </>
+        </div>
     );
 }
