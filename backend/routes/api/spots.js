@@ -115,49 +115,84 @@ router.get('/', async (req, res) => {
 
 // Get all Spots owned by the Current User
 router.get('/current', requireAuth, async (req, res) => {
+    // const user = await User.findByPk(req.user.id);
     const userSpots = await Spot.findAll({
-        where: { ownerId: req.user.id },
-        attributes: {
-            include: [
-                [
-                    sequelize.fn(
-                        'ROUND',
-                        sequelize.fn(
-                            'AVG',
-                            sequelize.col('User_Review.Review.stars')
-                        ),
-                        1
-                    ),
-                    'avgRating',
-                ],
-                [sequelize.col('url'), 'previewImage'],
-            ],
-        },
+            where: { ownerId: req.user.id },
         include: [
-            {
-                model: User,
-                through: {
-                    model: Review,
-                    attributes: ['stars'],
-                },
-                as: 'User_Review',
-                attributes: [],
-                required: false,
-                includeIgnoreAttributes: false,
-            },
+            { model: Review },
             {
                 model: Spot_Image,
-                attributes: [],
                 where: {
                     preview: true,
                 },
-                required: false,
-                includeIgnoreAttributes: false,
             },
         ],
-        includeIgnoreAttributes: false,
-        group: ['Spot.id', 'Spot_Images.url'],
     });
+    userSpots.forEach((spot) => {
+        spot.dataValues.previewImage = 'no preview Image';
+        spot.Spot_Images.forEach((image) => {
+            if (image.dataValues.preview) {
+                spot.dataValues.previewImage = image.url;
+            }
+        });
+        delete spot.dataValues.Spot_Images;
+        let sum = 0;
+        if (spot.Reviews.length) {
+            spot.Reviews.forEach((review) => {
+                sum += review.dataValues.stars;
+            });
+            sum = sum / spot.Reviews.length;
+            spot.dataValues.avgRating = sum;
+        } else {
+            spot.dataValues.avgRating = null;
+        }
+        delete spot.dataValues.Reviews;
+    });
+
+    // const userSpots = await Spot.findAll({
+    //     where: { ownerId: req.user.id },
+    //     attributes: {
+    //         include: [
+    //             // [
+    //             //     sequelize.fn(
+    //             //         'ROUND',
+    //             //         sequelize.fn(
+    //             //             'AVG',
+    //             //             sequelize.col('User_Review.Review.stars')
+    //             //         ),
+    //             //         1
+    //             //     ),
+    //             //     'avgRating',
+    //             // ],
+    //             // [sequelize.col('url'), 'previewImage'],
+    //         ],
+    //     },
+    //     include: [
+    //         {
+    //             model: User,
+    //             through: {
+    //                 model: Review,
+    //                 attributes: ['stars'],
+    //             },
+    //             as: 'User_Review',
+    //             attributes: [],
+    //             required: false,
+    //             includeIgnoreAttributes: false,
+    //         },
+    //         {
+    //             model: Spot_Image,
+    //             attributes: [],
+    //             where: {
+    //                 preview: true,
+    //             },
+    //             required: false,
+    //             includeIgnoreAttributes: false,
+    //         },
+    //     ],
+    //     includeIgnoreAttributes: false,
+    //     group: ['Spot.id', 'Spot_Images.url'],
+    // });
+
     return res.json({
         Spots: userSpots,
     });
