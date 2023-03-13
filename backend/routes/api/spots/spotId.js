@@ -70,24 +70,24 @@ router.get('/', async (req, res) => {
     let spot = await Spot.findByPk(req.params.spotId, {
         attributes: {
             include: [
-                [
-                    sequelize.fn(
-                        'COUNT',
-                        sequelize.col('User_Review.Review.id')
-                    ),
-                    'numReviews',
-                ],
-                [
-                    sequelize.fn(
-                        'ROUND',
-                        sequelize.fn(
-                            'AVG',
-                            sequelize.col('User_Review.Review.stars')
-                        ),
-                        1
-                    ),
-                    'avgStarRating',
-                ],
+                // [
+                //     sequelize.fn(
+                //         'COUNT',
+                //         sequelize.col('User_Review.Review.id')
+                //     ),
+                //     'numReviews',
+                // ],
+                // [
+                //     sequelize.fn(
+                //         'ROUND',
+                //         sequelize.fn(
+                //             'AVG',
+                //             sequelize.col('User_Review.Review.stars')
+                //         ),
+                //         1
+                //     ),
+                //     'avgStarRating',
+                // ],
             ],
         },
         include: [
@@ -95,12 +95,12 @@ router.get('/', async (req, res) => {
                 model: User,
                 through: {
                     model: Review,
-                    attributes: ['stars'],
+                    // attributes: ['stars'],
                 },
                 as: 'User_Review',
-                attributes: [],
-                required: false,
-                includeIgnoreAttributes: false,
+                // attributes: [],
+                // required: false,
+                // includeIgnoreAttributes: false,
             },
             {
                 model: Spot_Image,
@@ -123,8 +123,19 @@ router.get('/', async (req, res) => {
     });
 
     if (spot) {
-        const owner = await User.findByPk(spot.ownerId);
-        spot.set('Owner', owner);
+        const owner = await spot.getOwner();
+        const reviews = await spot.getReviews();
+        spot.setDataValue('Owner', owner, {
+            attributes: ['id', 'firstName', 'lastName'],
+        });
+        spot.setDataValue(
+            'avgStarRating',
+            reviews.reduce((prev, curr) => prev + curr.stars, 0) /
+                reviews.length
+        );
+        spot.setDataValue('numReviews', reviews.length);
+        // console.log(spot)
+        // spot.set('avgStarRating',)
         return res.json(spot);
     } else {
         res.status(404);
