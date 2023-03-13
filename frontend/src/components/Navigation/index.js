@@ -39,6 +39,13 @@ function Navigation({ isLoaded }) {
                     Home
                 </NavLink>
             </li>
+            {sessionUser && (
+                <li>
+                    <NavLink exact to="/spots/new">
+                        Create a New Spot
+                    </NavLink>
+                </li>
+            )}
             {isLoaded && sessionLinks}
         </ul>
     );

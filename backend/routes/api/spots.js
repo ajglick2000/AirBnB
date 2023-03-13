@@ -102,7 +102,7 @@ router.get('/', async (req, res) => {
             sum = sum / spot.Reviews.length;
             spot.dataValues.avgRating = sum;
         } else {
-            spot.dataValues.avgRating = sum;
+            spot.dataValues.avgRating = null;
         }
         delete spot.dataValues.Reviews;
     });
