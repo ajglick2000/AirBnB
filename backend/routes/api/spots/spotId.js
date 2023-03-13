@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
             },
         ],
 
-        includeIgnoreAttributes: false,
+        includeIgnoreAttributes: true,
         group: ['Spot.id'],
     });
     if (spot) {

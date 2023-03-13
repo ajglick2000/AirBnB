@@ -1,0 +1,13 @@
+img {
+    height: 200px;
+    width: 200px;
+}
+
+#spots {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* .spot {
+    flex: 1 1 0px;
+} */

@@ -18,14 +18,14 @@ const users = [
         email: 'user1@user.io',
         username: 'FakeUser1',
         firstName: 'Fake',
-        lastName: 'User',
+        lastName: 'User1',
         hashedPassword: bcrypt.hashSync('password2'),
     },
     {
         email: 'user2@user.io',
         username: 'FakeUser2',
         firstName: 'Fake',
-        lastName: 'User',
+        lastName: 'User2',
         hashedPassword: bcrypt.hashSync('password3'),
     },
     {
